@@ -1,4 +1,4 @@
-Deuces
+Deuces - installation and usage
 ========
    
 ## Installation
