@@ -127,7 +127,7 @@ class Evaluator(object):
 
     def hand_summary(self, board, hands):
         """
-        Gives a sumamry of the hand with ranks as time proceeds. 
+        Gives a summary of the hand with ranks as time proceeds. 
 
         Requires that the board is in chronological order for the 
         analysis to make sense.
@@ -142,7 +142,7 @@ class Evaluator(object):
 
         for i in range(len(stages)):
             line = ("=" * line_length) + " %s " + ("=" * line_length) 
-            print line % stages[i]
+            print(line % stages[i])
             
             best_rank = 7463  # rank one worse than worst hand
             winners = []
@@ -152,9 +152,9 @@ class Evaluator(object):
                 rank = self.evaluate(hand, board[:(i + 3)])
                 rank_class = self.get_rank_class(rank)
                 class_string = self.class_to_string(rank_class)
-                percentage = 1.0 - self.get_five_card_rank_percentage(rank)  # higher better here
-                print "Player %d hand = %s, percentage rank among all hands = %f" % (
-                    player + 1, class_string, percentage)
+                # percentage = 1.0 - self.get_five_card_rank_percentage(rank)  # higher better here
+                print "Player %d hand = %s" % (
+                    player + 1, class_string)
 
                 # detect winner
                 if rank == best_rank:
