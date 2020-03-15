@@ -1,52 +1,63 @@
-import card, deck, evaluator, lookup
+from card import Card
+from deck import Deck
+from evaluator import Evaluator
+from lookup import LookupTable
 
-board = [
-    Card.new('2h'),
-    Card.new('2s'),
-    Card.new('Jc')
-]
-hand = [
-    Card.new('Qs'),
-    Card.new('Th')
-]
+""" TODO: implement game here
+    - set number of players
+    - run through streets with evaluations and odds
+    - implement betting recommendations
+    - repeat until exit
+"""
 
-# pretty print cards to console
-Card.print_pretty_cards(board + hand)
+print("\nWelcome to the Byn poker room.")
 
-# create an evaluator
-evaluator = Evaluator()
+spots = int(input("\n\nHow many spots at the table? "))
 
-# and rank your hand
-rank = evaluator.evaluate(board, hand)
-print "Rank for your hand is: %d" % rank
+print("\n\nLet's get the cards in the air.")
 
-# or for random cards or games, create a deck
-print "Dealing a new hand..."
 deck = Deck()
-board = deck.draw(5)
-player1_hand = deck.draw(2)
-player2_hand = deck.draw(2)
+hands = []
+burn = []
 
-print "The board:"
-Card.print_pretty_cards(board)
+while True:
+    # player hands
+    for i in range(spots):
+        hand = deck.draw(2)
+        hands.append(hand)
 
-print "Player 1's cards:"
-Card.print_pretty_cards(player1_hand)
+    print("\n\nYour hand: ")
+    Card.print_pretty_cards(hands[0])
 
-print "Player 2's cards:"
-Card.print_pretty_cards(player2_hand)
+    # TODO: pre flop betting
 
-p1_score = evaluator.evaluate(board, player1_hand)
-p2_score = evaluator.evaluate(board, player2_hand)
+    burn.append(deck.draw(1))
+    board = deck.draw(3)
 
-# bin the scores into classes
-p1_class = evaluator.get_rank_class(p1_score)
-p2_class = evaluator.get_rank_class(p2_score)
+    print("\n\nBoard: ")
+    Card.print_pretty_cards(board)
 
-# or get a human-friendly string to describe the score
-print "Player 1 hand rank = %d (%s)" % (p1_score, evaluator.class_to_string(p1_class))
-print "Player 2 hand rank = %d (%s)" % (p2_score, evaluator.class_to_string(p2_class))
+    # TODO: post flop betting
 
-# or just a summary of the entire hand
-hands = [player1_hand, player2_hand]
-evaluator.hand_summary(board, hands)
+    burn.append(deck.draw(1))
+    board.append(deck.draw(1))
+
+    print("\n\nBoard: ")
+    Card.print_pretty_cards(board)
+
+    # TODO: post turn betting
+
+    burn.append(deck.draw(1))
+    board.append(deck.draw(1))
+
+    print("\n\nBoard: ")
+    Card.print_pretty_cards(board)
+
+    # TODO: post river betting
+
+    print("\n\nOpponent's hands: ")
+    for i in range(1, spots):
+        print("\n" + str(i) + ": ")
+        Card.print_pretty_cards(hands[i])
+
+    exit(1)
