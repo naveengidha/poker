@@ -3,6 +3,9 @@ from deck import Deck
 from evaluator import Evaluator
 from lookup import LookupTable
 
+def print_exit_message():
+    print("\n\nThank you for playing at the Ace Byn poker room.\n\n")
+
 """ TODO: implement game here
     - set number of players
     - run through streets with evaluations and odds
@@ -10,54 +13,88 @@ from lookup import LookupTable
     - repeat until exit
 """
 
-print("\nWelcome to the Byn poker room.")
+print("\nWelcome to the Ace Byn poker room.")
 
-spots = int(input("\n\nHow many spots at the table? "))
+spots = int(input("\n\nHow many spots would you like at the table? "))
 
 print("\n\nLet's get the cards in the air.")
 
-deck = Deck()
-hands = []
-burn = []
+current_hand = "y"
+next_hand = "y"
 
-while True:
-    # player hands
-    for i in range(spots):
-        hand = deck.draw(2)
-        hands.append(hand)
+# main game loop
+while next_hand == "y":
+    current_hand = "y"
+    while current_hand == "y":
+        deck = Deck()
+        evaluator = Evaluator()
+        hands = []
+        burn = []
 
-    print("\n\nYour hand: ")
-    Card.print_pretty_cards(hands[0])
+        # player hands
+        for i in range(spots):
+            hand = deck.draw(2)
+            hands.append(hand)
 
-    # TODO: pre flop betting
+        print("\n\nYour hand: ")
+        Card.print_pretty_cards(hands[0])
 
-    burn.append(deck.draw(1))
-    board = deck.draw(3)
+        # TODO: pre flop betting/odds
 
-    print("\n\nBoard: ")
-    Card.print_pretty_cards(board)
+        # flop
+        burn.append(deck.draw(1))
+        board = deck.draw(3)
 
-    # TODO: post flop betting
+        current_hand = raw_input("\n\nWould you like to see the flop? ('y'/'n'): ")
+        if current_hand == "n":
+            break
 
-    burn.append(deck.draw(1))
-    board.append(deck.draw(1))
+        print("\n\nBoard: ")
+        Card.print_pretty_cards(board)
 
-    print("\n\nBoard: ")
-    Card.print_pretty_cards(board)
+        # TODO: post flop betting/odds
 
-    # TODO: post turn betting
+        # turn
+        burn.append(deck.draw(1))
+        board.append(deck.draw(1))
 
-    burn.append(deck.draw(1))
-    board.append(deck.draw(1))
+        current_hand = raw_input("\n\nWould you like to see the turn? ('y'/'n'): ")
+        if current_hand == "n":
+            break
 
-    print("\n\nBoard: ")
-    Card.print_pretty_cards(board)
+        print("\n\nBoard: ")
+        Card.print_pretty_cards(board)
 
-    # TODO: post river betting
+        # TODO: post turn betting/odds
 
-    print("\n\nOpponent's hands: ")
-    for i in range(1, spots):
-        print("\n" + str(i) + ": ")
-        Card.print_pretty_cards(hands[i])
+        # river
+        burn.append(deck.draw(1))
+        board.append(deck.draw(1))
 
-    exit(1)
+        current_hand = raw_input("\n\nWould you like to see the river? ('y'/'n'): ")
+        if current_hand == "n":
+           break
+
+        print("\n\nBoard: ")
+        Card.print_pretty_cards(board)
+
+        # TODO: post river betting/odds
+
+        current_hand = raw_input("\n\nWould you like to see all hands? ('y'/'n'): ")
+        if current_hand == "n":
+           break
+
+        print("\n\nOpponent's hands: \n")
+        for i in range(1, spots):
+            print("\n" + str(i) + ": ")
+            Card.print_pretty_cards(hands[i])
+
+        print("\n\n")
+        evaluator.hand_summary(board, hands)
+
+        # break from inner loop to ask for next hand
+        break
+
+    next_hand = raw_input("\n\nWould you like to play the next hand? ('y'/'n'): ")
+    if next_hand == "n":
+        print_exit_message()
