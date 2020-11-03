@@ -168,11 +168,11 @@ class Evaluator(object):
                 #print
                 #print ("=" * line_length) + " HAND OVER " + ("=" * line_length) 
                 if len(winners) == 1:
-                    print "Player %d is the winner with a %s" % (winners[0] + 1, 
-                        self.class_to_string(self.get_rank_class(self.evaluate(hands[winners[0]], board))))
+                    print("Player %d is the winner with a %s" % (winners[0] + 1, 
+                        self.class_to_string(self.get_rank_class(self.evaluate(hands[winners[0]], board)))))
                 else:
-                    print "Players %s tied for the win with a %s" % (winners, 
-                        self.class_to_string(self.get_rank_class(self.evaluate(hands[winners[0]], board))))
+                    print("Players %s tied for the win with a %s" % (winners, 
+                        self.class_to_string(self.get_rank_class(self.evaluate(hands[winners[0]], board)))))
 
 
 
